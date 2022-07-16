@@ -9,7 +9,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "symfony/console": "6.0.x-dev"
+        "symfony/console": "6.0.x-dev",
+        "phpunit/phpunit": "9.5.x-dev"
     },
     "autoload": {
         "psr-4": {

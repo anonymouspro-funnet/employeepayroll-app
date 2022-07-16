@@ -27,22 +27,8 @@ class CreatePayrollFile extends Command
             )
         );
 
-        if (!file_exists("./files/payrolldates.csv")) {
-            $message="File successfully created";
-        }else{
-            $message="File contents replaced";
-        }
-        $file = fopen("./files/payrolldates.csv", 'w+');
-        if ($file === false) {
-            $utils->OutputResponse($input,$output,0,'Cannot open the file ');
-            die();
-        }
-        foreach ($payroll_details as $row) {
-            fputcsv($file, $row);
-        }
-        fclose($file);
+        $utils->populateCSV($payroll_details,$input,$output);
 
-        $utils->OutputResponse($input,$output,1,$message);
         return Command::SUCCESS;
     }
 }

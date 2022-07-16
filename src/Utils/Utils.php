@@ -58,12 +58,23 @@ class Utils
     }
 
     public function populateCSV($payroll_details,$input,$output){
-        if (!file_exists("./files/payrolldates.csv")) {
+        $path="./files/payrolldates.csv";
+        if (!file_exists($path)) {
             $message = "File successfully created" ;
         } else {
+            $fh = fopen($path,'rb') or die("ERROR OPENING DATA");
+            $line_count=0;
+            while (fgets($fh) !== false) $line_count++;
+            if($line_count>12){
+                unlink($path);
+            }
+            fclose($fh);
             $message = "File contents replaced" ;
         }
-        $file = fopen("./files/payrolldates.csv", 'a');
+
+
+
+        $file = fopen($path, 'a');
         if ($file === false) {
             $this->OutputResponse($input, $output, 0, 'Cannot open the file ');
             die();
@@ -72,5 +83,6 @@ class Utils
             fputcsv($file, $row);
         }
         fclose($file);
+        $this->OutputResponse($input,$output,1,$message);
     }
 }
