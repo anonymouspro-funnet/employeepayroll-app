@@ -17,37 +17,32 @@ class CreateYearlyPayrollFile extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $utils=new Utils();
-        $requestdate = $utils->OutputResponse($input,$output,2,'Enter Month/Year');
+        $request_date = $utils->OutputResponse($input,$output,2,'Enter Month/Year');
 
-        $requestdate='01/'.$requestdate;
-        $requestdate=date('d/m/Y',strtotime($requestdate));
+        $date_arr = preg_split ("/\//", $request_date);
+        $first_date_of_month=$date_arr[1]."-".$date_arr[0]."-01";
+        $tenth_date_of_month=$date_arr[1]."-".$date_arr[0]."-10";
+        $first_date_of_month=date("Y-m-d",strtotime($first_date_of_month));
 
-        $lastdateofthemonth=date('Y-m-t',strtotime($requestdate));
+        $payment_date=$utils->getPaymentDate($first_date_of_month);
+        $bonus_date=$utils->getBonusDate($tenth_date_of_month);
 
 
-        $lastworkingday = date('l', strtotime($lastdateofthemonth));
-
-        if($lastworkingday == "Saturday") {
-            $newdate = strtotime ('-1 day', strtotime($lastdateofthemonth));
-            $lastworkingday = date ('Y-m-j', $newdate);
-        }
-        elseif($lastworkingday == "Sunday") {
-            $newdate = strtotime ('-2 day', strtotime($lastdateofthemonth));
-            $lastworkingday = date ( 'Y-m-j' , $newdate );
-        }
+        $request_date='01/'.$request_date;
+        $request_date=date('d/m/Y',strtotime($request_date));
 
         $payroll_details = array(
             array(
-                "Period: " . date("M",strtotime($lastdateofthemonth)) . "/" . date('Y',strtotime($lastdateofthemonth)),
-                "Basic Payment: " . date('Y-m-d',strtotime($lastworkingday)),
-                "Bonus Payment: " . date('Y-m-d',strtotime($lastworkingday))
+                "Period: " . date("M",strtotime($request_date)) . "/" . date('Y',strtotime($request_date)),
+                "Basic Payment: " . $payment_date,
+                "Bonus Payment: " . $bonus_date
             )
         );
 
         if (!file_exists("./files/payrolldates.csv")) {
-            $message="File successfully created";
+            $message="File successfully created".$bonus_date;
         }else{
-            $message="File contents replaced".$lastdateofthemonth;
+            $message="File contents replaced".$bonus_date;
         }
         $file = fopen("./files/payrolldates.csv", 'a');
         if ($file === false) {
