@@ -5,6 +5,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
 use Payroll\Commands\CreatePayrollFile;
+use Payroll\Commands\CreateMonthPayrollFile;
 use Payroll\Commands\CreateYearlyPayrollFile;
 
 $application = new Application();
@@ -12,6 +13,7 @@ $application = new Application();
 // ... register commands
 
 $application->add(new CreatePayrollFile());
+$application->add(new CreateMonthPayrollFile());
 $application->add(new CreateYearlyPayrollFile());
 
 $application->run();

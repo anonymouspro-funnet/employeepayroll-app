@@ -56,4 +56,21 @@ class Utils
 
         return $bonus_date;
     }
+
+    public function populateCSV($payroll_details,$input,$output){
+        if (!file_exists("./files/payrolldates.csv")) {
+            $message = "File successfully created" ;
+        } else {
+            $message = "File contents replaced" ;
+        }
+        $file = fopen("./files/payrolldates.csv", 'a');
+        if ($file === false) {
+            $this->OutputResponse($input, $output, 0, 'Cannot open the file ');
+            die();
+        }
+        foreach ($payroll_details as $row) {
+            fputcsv($file, $row);
+        }
+        fclose($file);
+    }
 }
