@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Payroll\Commands\CreatePayrollFile;
+use Payroll\Commands\CreateYearlyPayrollFile;
+
+$application = new Application();
+
+// ... register commands
+
+$application->add(new CreatePayrollFile());
+$application->add(new CreateYearlyPayrollFile());
+
+$application->run();

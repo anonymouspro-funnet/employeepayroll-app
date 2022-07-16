@@ -1,0 +1,22 @@
+{
+    "name": "anonymous/employeepayroll-app",
+    "description": "Payroll app",
+    "authors": [
+        {
+            "name": "Samuel Njenga Kamau",
+            "email": "samuelnjengakamau@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "symfony/console": "6.0.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Payroll\\": "src"
+        },
+        "classmap": [
+            "src"
+        ]
+    }
+}
